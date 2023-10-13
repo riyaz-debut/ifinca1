@@ -1,0 +1,29 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+version: "2"
+
+networks:
+  ifinca:
+
+services:
+  ca-orderer-ifinca:
+    image: hyperledger/fabric-ca:1.4.9
+    restart: always
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_CSR_CN=ca-orderer-ifinca
+      - FABRIC_CA_SERVER_CSR_HOSTS=0.0.0.0
+      - FABRIC_CA_SERVER_CA_NAME=ca-orderer-ifinca
+      - FABRIC_CA_SERVER_PORT=6066
+    ports:
+      - "6066:6066"
+    command: sh -c 'fabric-ca-server start -d -b admin:KfuKYKGB -p 6066'
+    volumes:
+      - ./data/ca-orderer-ifinca:/etc/hyperledger/fabric-ca-server
+    container_name: ca-orderer-ifinca
+    networks:
+      - ifinca
